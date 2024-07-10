@@ -19,13 +19,13 @@ pw = input("password: ")
 if (un, pw) not in list(USERS.items()):
     sys.exit("unregistered user, terminating the program...")
 
-# Registered user - programs greets them
+# Registered user - program greets them
 #
 #
 print(
     "-" * 41,
     f"Welcome to the app, {un}",
-    "We have 3 texts to be analyzed.",
+    f"We have {len(TEXTS)} texts to be analyzed.",
     "-" * 41,
     sep="\n"
 )
@@ -33,13 +33,15 @@ print(
 # User's choice of text
 #
 #
-text_num = input("Enter a number btw. 1 and 3 to select: ")
+text_num = input(f"Enter a number btw. 1 and {len(TEXTS)} to select: ")
 print("-" * 41)
 
 # If the input is not a number or is out of the given range, then the program terminates
 #
 #
-if int(text_num) not in range(1, 4):
+if not text_num.isnumeric():
+    sys.exit("Invalid entry. Terminating the program...")
+elif int(text_num) not in range(1, len(TEXTS)):
     sys.exit("Invalid entry. Terminating the program...")
 
 # Removing all "," and "." and "\n" from the chosen text and then splitting it into individual words
@@ -47,18 +49,41 @@ if int(text_num) not in range(1, 4):
 # "\n" must be replaced by empty space (it surprised me that .split() 'translates' new line as a string "\n")
 #
 #
-chosen_text_split = re.sub("[,.]", "", TEXTS[int(text_num) - 1]).replace("\n", " ").split(" ")
+# chosen_text_split = re.sub("[,.]", "", TEXTS[int(text_num) - 1]).replace("\n", " ").split(" ")
 
-chosen_text_final = [word for word in chosen_text_split if word != ""]
+# chosen_text_final = [word for word in chosen_text_split if word != ""]
 
-# print(chosen_text_final)
+# chosen_text_final = ''.join(letter for letter in TEXTS[int(text_num) - 1] if letter.isalnum())
 
 
+# Můj myšlenkový pochod na odstranění nežádoucích symbolů - teček a čárek v tomto případě:
+# 1.) na konci potřebuju list s jednotlivými slovy
+#
+# 2.) připravím si prázdný list a v následném for cyklu si odfiltruju všechny znaky,
+# které nejsou alphanumerické nebo mezera či nový řádek
+# v zápětí si nový řádek nahradím mezerou (upřímně si nejsem jist, jestli to funguje
+# protože vzniklý text se pak vypisuje do odstavečku...
+# na závěr si vyhovující znaky přidávám do připraveného listu
+#
+# 3.) z listu jednotlivých symbolů vytvořím string pomocí .join a hned jej splitnu pomocí .split
+#
+# 4.) voila, mám list jednotlivých slov
+
+chosen_text = []
+
+for i in TEXTS[int(text_num) - 1]:
+    if i.isalnum() or i == " " or i == "\n":
+        i.replace("\n", " ")
+        chosen_text.append(i)
+
+chosen_text_final = ''.join(i for i in chosen_text).split()
+#
+#
 # Variables for desired information
 #
 #
 total_words = len(chosen_text_final)
-total_titlecase = len([word for word in chosen_text_final if word.istitle()])
+total_titlecase = len([word for word in chosen_text_final if (word.isalpha() and word.istitle())])
 total_upper = len([word for word in chosen_text_final if word.isupper() & word.isalpha()])
 total_lower = len([word for word in chosen_text_final if word.islower() & word.isalpha()])
 total_numeric = len([word for word in chosen_text_final if word.isnumeric()])
