@@ -59,7 +59,7 @@ elif int(text_num) not in range(1, len(TEXTS)):
 # Můj myšlenkový pochod na odstranění nežádoucích symbolů - teček a čárek v tomto případě:
 # 1.) na konci potřebuju list s jednotlivými slovy
 #
-# 2.) připravím si prázdný list a v následném for cyklu si odfiltruju všechny znaky,
+# 2.) připravím si prázdný list a v následném for-cyklu si odfiltruju všechny znaky,
 # které nejsou alphanumerické nebo mezera či nový řádek
 # v zápětí si nový řádek nahradím mezerou (upřímně si nejsem jist, jestli to funguje
 # protože vzniklý text se pak vypisuje do odstavečku...
@@ -81,9 +81,15 @@ chosen_text_final = ''.join(i for i in chosen_text).split()
 #
 # Variables for desired information
 #
+for i in chosen_text_final:
+    if i.istitle():
+        print(i)
+
+
+
 #
 total_words = len(chosen_text_final)
-total_titlecase = len([word for word in chosen_text_final if (word.isalpha() and word.istitle())])
+total_titlecase = len([word for word in chosen_text_final if word[0].isupper()])
 total_upper = len([word for word in chosen_text_final if word.isupper() & word.isalpha()])
 total_lower = len([word for word in chosen_text_final if word.islower() & word.isalpha()])
 total_numeric = len([word for word in chosen_text_final if word.isnumeric()])
