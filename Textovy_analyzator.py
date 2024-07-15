@@ -81,12 +81,6 @@ chosen_text_final = ''.join(i for i in chosen_text).split()
 #
 # Variables for desired information
 #
-for i in chosen_text_final:
-    if i.istitle():
-        print(i)
-
-
-
 #
 total_words = len(chosen_text_final)
 total_titlecase = len([word for word in chosen_text_final if word[0].isupper()])
@@ -94,6 +88,7 @@ total_upper = len([word for word in chosen_text_final if word.isupper() & word.i
 total_lower = len([word for word in chosen_text_final if word.islower() & word.isalpha()])
 total_numeric = len([word for word in chosen_text_final if word.isnumeric()])
 sum_numeric = sum([int(word) for word in chosen_text_final if word.isnumeric()])
+
 
 print(
     f"There are {total_words} words in the selected text.",
